@@ -1,7 +1,9 @@
 #include <windows.h>
 #include <TCHAR.H>
+#include "resource.h"
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
+HINSTANCE g_hlnst;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow)
 {
@@ -13,6 +15,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 	WndClass.cbClsExtra = 0;
 	WndClass.cbWndExtra = 0;
 	WndClass.hInstance = hInstance;
+	g_hlnst = hInstance;
 	WndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	WndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 	WndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
@@ -45,6 +48,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 
 #define ITEMNUM 10
 
+HBITMAP appleBitmap;
 int board[22][22];	
 int wormX[100], wormY[100];
 int xDirect, yDirect, len;
@@ -93,9 +97,25 @@ void DrawGameBoard(HDC hdc)
 				Rectangle(hdc, x * 20, y * 20, (x + 1) * 20, (y + 1) * 20);
 				break;
 			case 2:
-				SelectObject(hdc, GetStockObject(BLACK_BRUSH));
-				Ellipse(hdc, x * 20, y * 20, (x + 1) * 20, (y + 1) * 20);
-				SelectObject(hdc, GetStockObject(WHITE_BRUSH));
+				//SelectObject(hdc, GetStockObject(BLACK_BRUSH));
+				//Ellipse(hdc, x * 20, y * 20, (x + 1) * 20, (y + 1) * 20);
+				//SelectObject(hdc, GetStockObject(WHITE_BRUSH));
+				HDC MemDC;
+				HBITMAP oldBitmap;
+				BITMAP bit;
+				int bx, by;
+
+				MemDC = CreateCompatibleDC(hdc);
+				oldBitmap = (HBITMAP)SelectObject(MemDC, appleBitmap);
+
+				GetObject(appleBitmap, sizeof(bit), &bit);
+				bx = bit.bmWidth;
+				by = bit.bmHeight;
+
+				BitBlt(hdc, x * 20, y * 20, x * 20 + bx, y * 20 + by, MemDC, 0, 0, SRCCOPY);
+
+				SelectObject(MemDC, oldBitmap);
+				DeleteDC(MemDC);
 				break;
 			case 4:
 				SelectObject(hdc, GetStockObject(GRAY_BRUSH));
@@ -120,6 +140,7 @@ void DrawGameBoard(HDC hdc)
 
 void GameInit()
 {
+	appleBitmap = LoadBitmap(g_hlnst, MAKEINTRESOURCE(IDB_BITMAP1));
 	int i;
 	for (i = 0; i < 22; i++)
 	{
