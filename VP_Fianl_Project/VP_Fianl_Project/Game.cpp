@@ -1,6 +1,5 @@
 #include <windows.h>
 #include <TCHAR.H>
-//#include "resource.h"
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
 
@@ -110,8 +109,6 @@ void DrawGameBoard(HDC hdc)
 	SelectObject(hdc, CreatePen(PS_SOLID, 2, RGB(255, 0, 0)));
 	Ellipse(hdc, wormX[0] * 20, wormY[0] * 20, (wormX[0] + 1) * 20, (wormY[0] + 1) * 20);
 	SelectObject(hdc, CreatePen(PS_SOLID, 2, RGB(0, 0, 255)));
-	/*OBitmap bitmap;
-	bitmap.LoadB	itmap()*/
 
 	for (i = 1; i < len; i++)
 		Ellipse(hdc, wormX[i] * 20, wormY[i] * 20, (wormX[i] + 1) * 20, (wormY[i] + 1) * 20);
@@ -227,16 +224,6 @@ void MovingWorm(HWND hwnd)
 	{
 		GameOver(hwnd);
 	}
-	else if (board[wormY[0]][wormX[0]] == 4) {
-		if (wormX[0] == 21) {
-			wormX[0] = 1;
-			wormY[0] = 18 + wormY[0];
-		}
-		else {
-			wormX[0] = 20;
-			wormY[0] = wormY[0] - 18;
-		}
-	}
 	else
 	{
 		if (board[wormY[0]][wormX[0]] == 2)
@@ -248,6 +235,18 @@ void MovingWorm(HWND hwnd)
 		}
 		else
 			board[wormY[len - 1]][wormX[len - 1]] = 0;
+
+		if (board[wormY[0]][wormX[0]] == 4) {
+			if (wormX[0] == 21) {
+				wormX[0] = 1;
+				wormY[0] = 18 + wormY[0];
+			}
+			else {
+				wormX[0] = 20;
+				wormY[0] = wormY[0] - 18;
+			}
+
+		}
 
 		for (i = len - 1; i > 1; i--)
 		{
