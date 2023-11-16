@@ -148,7 +148,11 @@
     <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="bitmap1.bmp" />
+    <Image Include="APPLE.bmp" />
+    <Image Include="bitmap3.bmp" />
+    <Image Include="bitmap4.bmp" />
+    <Image Include="bitmap5.bmp" />
+    <Image Include="bitmap6.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

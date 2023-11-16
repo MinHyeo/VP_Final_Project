@@ -50,7 +50,15 @@ END
 // Bitmap
 //
 
-IDB_BITMAP1             BITMAP                  "bitmap1.bmp"
+IDB_BITMAP1             BITMAP                  "APPLE.bmp"
+
+IDB_BITMAP3             BITMAP                  "bitmap3.bmp"
+
+IDB_BITMAP4             BITMAP                  "bitmap4.bmp"
+
+IDB_BITMAP5             BITMAP                  "bitmap5.bmp"
+
+IDB_BITMAP6             BITMAP                  "bitmap6.bmp"
 
 #endif    // 한국어(대한민국) resources
 /////////////////////////////////////////////////////////////////////////////
