@@ -216,7 +216,7 @@ void DrawBackGround(HDC hdc) {
 	bx = bit.bmWidth;
 	by = bit.bmHeight;
 
-	BitBlt(hdc, 0, 0, 440, 440, MemDC, 0, 0, SRCCOPY);
+	BitBlt(hdc, 0, 0, bx, by, MemDC, 0, 0, SRCCOPY);
 
 	SelectObject(MemDC, oldBitmap);
 	DeleteDC(MemDC);
