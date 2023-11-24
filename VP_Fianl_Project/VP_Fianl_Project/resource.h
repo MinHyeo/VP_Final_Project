@@ -8,13 +8,21 @@
 #define IDB_BITMAP4                     104
 #define IDB_BITMAP5                     105
 #define IDB_BITMAP6                     106
+#define IDB_BITMAP7                     107
+#define IDB_BITMAP8                     109
+#define IDB_BITMAP9                     110
+#define IDB_BITMAP10                    111
+#define IDB_BITMAP11                    112
+#define IDR_MENU1                       113
+#define ID_40001                        40001
+#define ID_BESTSCORE                    40002
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        107
-#define _APS_NEXT_COMMAND_VALUE         40001
+#define _APS_NEXT_RESOURCE_VALUE        114
+#define _APS_NEXT_COMMAND_VALUE         40003
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

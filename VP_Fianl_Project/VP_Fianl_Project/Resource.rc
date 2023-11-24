@@ -60,6 +60,24 @@ IDB_BITMAP5             BITMAP                  "bitmap5.bmp"
 
 IDB_BITMAP6             BITMAP                  "bitmap6.bmp"
 
+IDB_BITMAP10            BITMAP                  "bitmap10.bmp"
+
+IDB_BITMAP11            BITMAP                  "bitmap11.bmp"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU1 MENU
+BEGIN
+    POPUP "게임"
+    BEGIN
+        MENUITEM "최고기록",                        ID_BESTSCORE
+    END
+END
+
 #endif    // 한국어(대한민국) resources
 /////////////////////////////////////////////////////////////////////////////
 

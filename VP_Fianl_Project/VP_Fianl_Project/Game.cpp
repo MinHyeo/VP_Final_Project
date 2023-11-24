@@ -22,7 +22,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 	WndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	WndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 	WndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
-	WndClass.lpszMenuName = NULL;
+	WndClass.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1);
 	WndClass.lpszClassName = _T("Window Class Name");
 	RegisterClass(&WndClass);
 	hwnd = CreateWindow(_T("Window Class Name"),
@@ -54,11 +54,14 @@ HBITMAP HeadBitmap;
 HBITMAP BodyBitmap;
 HBITMAP TailBitmap;
 HBITMAP BackGroundBitmap;
+HBITMAP BoardBitmap;
+HBITMAP TeleportBitmap;
+HBITMAP myBitmap;
+RECT rt;
 int board[22][22];	
 int wormX[100], wormY[100];
 int xDirect, yDirect, len;
 int score;
-
 
 void ItemGenerator()
 {
@@ -161,72 +164,21 @@ HBITMAP GetRotatedBitmap(HDC hdc, HBITMAP hBitmap, float radians, COLORREF clrBa
 	return hbmResult;
 }
 
-void DrawApple(HDC hdc, int x, int y) {
-	HDC MemDC;
-	HBITMAP oldBitmap;
-	BITMAP bit;
-	int bx, by;
-
-	MemDC = CreateCompatibleDC(hdc);
-	oldBitmap = (HBITMAP)SelectObject(MemDC, appleBitmap);
-	
-
-	GetObject(appleBitmap, sizeof(bit), &bit);
-	bx = bit.bmWidth;
-	by = bit.bmHeight;
-
-	TransparentBlt(hdc, x * 20, y * 20, bx, by, MemDC, 0, 0, bx, by, RGB(255, 255, 255));
-
-	SelectObject(MemDC, oldBitmap);
-	DeleteDC(MemDC);
-}
-
-void DrawLarva(HDC hdc, HBITMAP larvaBitmap, int index){
-	HDC MemDC;
-	HBITMAP oldBitmap;
-	BITMAP bit;
-	int bx, by;
-
-	MemDC = CreateCompatibleDC(hdc);
-	oldBitmap = (HBITMAP)SelectObject(MemDC, larvaBitmap);
-
-	GetObject(larvaBitmap, sizeof(bit), &bit);
-	bx = bit.bmWidth;
-	by = bit.bmHeight;
-
-	TransparentBlt(hdc, wormX[index] * 20, wormY[index] * 20, bx, by, MemDC, 0, 0, bx, by, RGB(255, 255, 255));
-	//BitBlt(hdc, wormX[index] * 20, wormY[index] * 20, (wormX[index] + 1) * 20, (wormY[index] + 1) * 20, MemDC, 0, 0, SRCCOPY);
-
-	SelectObject(MemDC, oldBitmap);
-	DeleteDC(MemDC);
-
-	SelectObject(hdc, CreatePen(PS_SOLID, 2, RGB(0, 0, 255)));
-}
-
-void DrawBackGround(HDC hdc) {
-	HDC MemDC;
-	HBITMAP oldBitmap;
-	BITMAP bit;
-	int bx, by;
-
-	MemDC = CreateCompatibleDC(hdc);
-	oldBitmap = (HBITMAP)SelectObject(MemDC, BackGroundBitmap);
-
-	GetObject(BackGroundBitmap, sizeof(bit), &bit);
-	bx = bit.bmWidth;
-	by = bit.bmHeight;
-
-	BitBlt(hdc, 0, 0, bx, by, MemDC, 0, 0, SRCCOPY);
-
-	SelectObject(MemDC, oldBitmap);
-	DeleteDC(MemDC);
-
-	SelectObject(hdc, CreatePen(PS_SOLID, 2, RGB(0, 0, 255)));
-}
-
 void DrawGameBoard(HDC hdc)
 {
-	DrawBackGround(hdc);
+	static HDC mem1dc, mem2dc;
+	static HBITMAP hBit1, oldBit1, oldBit2;
+
+	mem1dc = CreateCompatibleDC(hdc);
+	mem2dc = CreateCompatibleDC(mem1dc);
+
+	hBit1 = CreateCompatibleBitmap(hdc, 440, 440);
+	
+	oldBit1 = (HBITMAP)SelectObject(mem1dc, hBit1);
+	oldBit2 = (HBITMAP) SelectObject(mem2dc, BackGroundBitmap);
+
+	BitBlt(mem1dc, 0, 0, 440, 440, mem2dc, 0, 0, SRCCOPY);
+
 	int i, x, y;
 	for (y = 0; y < 22; y++) {
 		for (x = 0; x < 22; x++)
@@ -234,40 +186,54 @@ void DrawGameBoard(HDC hdc)
 			switch (board[y][x])
 			{
 			case -1:
-				Rectangle(hdc, x * 20, y * 20, (x + 1) * 20, (y + 1) * 20);
+				oldBit2 = (HBITMAP)SelectObject(mem2dc, BoardBitmap);
+				BitBlt(mem1dc, x * 20, y * 20, (x + 1) * 20, (y + 1) * 20, mem2dc, 0, 0, SRCCOPY);
 				break;
 			case 2:
-				DrawApple(hdc, x, y);
+				oldBit2 = (HBITMAP)SelectObject(mem2dc, appleBitmap);
+				TransparentBlt(mem1dc, x * 20, y * 20, 20, 20, mem2dc, 0, 0, 20, 20, RGB(255, 255, 255));
 				break;
 			case 4:
-				SelectObject(hdc, GetStockObject(GRAY_BRUSH));
-				Rectangle(hdc, x * 20, y * 20, (x + 1) * 20, (y + 1) * 20);
-				SelectObject(hdc, GetStockObject(WHITE_BRUSH));
+				oldBit2 = (HBITMAP)SelectObject(mem2dc, TeleportBitmap);
+				BitBlt(mem1dc, x * 20, y * 20, (x + 1) * 20, (y + 1) * 20, mem2dc, 0, 0, SRCCOPY);
 				break;
 			}
 		}
 	}
 
-	DrawLarva(hdc, HeadBitmap, 0);
+	oldBit2 = (HBITMAP)SelectObject(mem2dc, HeadBitmap);
+	TransparentBlt(mem1dc, wormX[0] * 20, wormY[0] * 20, 20, 20, mem2dc, 0, 0, 20, 20, RGB(255, 255, 255));
 	for (i = 1; i < len; i++) {
-		if(i == len - 1)
-			DrawLarva(hdc, TailBitmap, i);
-		else
-			DrawLarva(hdc, BodyBitmap, i);
+		if (i == len - 1) {
+			oldBit2 = (HBITMAP)SelectObject(mem2dc, TailBitmap);
+			TransparentBlt(mem1dc, wormX[i] * 20, wormY[i] * 20, 20, 20, mem2dc, 0, 0, 20, 20, RGB(255, 255, 255));
+		}
+		else {
+			oldBit2 = (HBITMAP)SelectObject(mem2dc, BodyBitmap);
+			TransparentBlt(mem1dc, wormX[i] * 20, wormY[i] * 20, 20, 20, mem2dc, 0, 0, 20, 20, RGB(255, 255, 255));
+		}
 	}
-		
+
+	BitBlt(hdc, 0, 0, 440, 440, mem1dc, 0, 0, SRCCOPY);
+
 	TCHAR scoreText[20];
-	wsprintf(scoreText, _T("score : %d"), score);
+	wsprintf(scoreText, _T("score : %5d"), score);
 	TextOut(hdc, 0, 22 * 20, scoreText, _tcslen(scoreText));
+
+	SelectObject(mem1dc, oldBit1);
+	DeleteDC(mem2dc);
+	DeleteDC(mem1dc);
 }
 
 void GameInit()
 {
-	appleBitmap = LoadBitmap(g_hlnst, MAKEINTRESOURCE(IDB_BITMAP1));
 	HeadBitmap = LoadBitmap(g_hlnst, MAKEINTRESOURCE(IDB_BITMAP3));
 	BodyBitmap = LoadBitmap(g_hlnst, MAKEINTRESOURCE(IDB_BITMAP4));
 	TailBitmap = LoadBitmap(g_hlnst, MAKEINTRESOURCE(IDB_BITMAP5));
+	appleBitmap = LoadBitmap(g_hlnst, MAKEINTRESOURCE(IDB_BITMAP1));
 	BackGroundBitmap = LoadBitmap(g_hlnst, MAKEINTRESOURCE(IDB_BITMAP6));
+	BoardBitmap = LoadBitmap(g_hlnst, MAKEINTRESOURCE(IDB_BITMAP10));
+	TeleportBitmap = LoadBitmap(g_hlnst, MAKEINTRESOURCE(IDB_BITMAP11));
 	int i;
 	for (i = 0; i < 22; i++)
 	{
@@ -308,9 +274,12 @@ void GameReset() {
 }
 
 void GameOver(HWND hwnd) {
+	//HANDLE hFile;
+
 	KillTimer(hwnd, 1);
 	TCHAR deathText[30];
 	wsprintf(deathText, _T("ав╬З╫ю╢о╢ы!! \n score : %d"), score);
+	//hFile = CreateFile(TEXT("socre.txt"), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, 0, NULL);
 	if (IDOK == MessageBox(hwnd, deathText, _T("Game Over"), MB_ICONHAND)) {
 		GameReset();
 		GameInit();
@@ -439,15 +408,24 @@ void MovingWorm(HWND hwnd)
 	}
 }
 
+void ShowBestScore(int CommendKey) {
+	switch (LOWORD(CommendKey)) {
+	case ID_BESTSCORE:
+
+		break;
+	}
+}
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
 	HDC hdc;
 	PAINTSTRUCT ps;
 	hdc = BeginPaint(hwnd, &ps);
+
 	switch (iMsg) {
 	case WM_CREATE:
 		GameInit();
+		GetClientRect(hwnd, &rt);
 		SetTimer(hwnd, 1, 100, NULL);
 		return 0;
 	case WM_PAINT:
@@ -456,9 +434,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 		DirectControl((int)wParam, hdc);
 		break;
+	case WM_COMMAND:
+		ShowBestScore((int)wParam);
+		break;
 	case WM_TIMER:
 		MovingWorm(hwnd);
-		InvalidateRgn(hwnd, NULL, TRUE);
+		InvalidateRgn(hwnd, NULL, FALSE);
 		break;
 	case WM_DESTROY:
 		KillTimer(hwnd, 1);

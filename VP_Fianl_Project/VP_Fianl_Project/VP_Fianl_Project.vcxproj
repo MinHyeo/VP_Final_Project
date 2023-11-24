@@ -149,6 +149,8 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="APPLE.bmp" />
+    <Image Include="bitmap10.bmp" />
+    <Image Include="bitmap11.bmp" />
     <Image Include="bitmap3.bmp" />
     <Image Include="bitmap4.bmp" />
     <Image Include="bitmap5.bmp" />
