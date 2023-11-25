@@ -296,6 +296,9 @@ void SaveScore() {
 	while (std::getline(iss, readStr, '\n')) {
 		try
 		{
+			std::istringstream iss2(readStr);
+			std::getline(iss2, readStr, ':');
+			std::getline(iss2, readStr, ':');
 			readData.push_back(std::stoi(readStr));
 		}
 		catch (const std::exception&)
@@ -310,8 +313,9 @@ void SaveScore() {
 	for (int i = 0; i < 10; i++) {
 		if (i >= readData.size())
 			break;
-
+		std::string number = std::to_string(i + 1) + ":";
 		std::string bestScoreStr = std::to_string(readData[i]);
+		WriteFile(hFile, number.c_str(), number.size(), &dwBytesWritten, NULL);
 		WriteFile(hFile, bestScoreStr.c_str(), bestScoreStr.size(), &dwBytesWritten, NULL);
 		WriteFile(hFile, newline.c_str(), newline.size(), &dwBytesWritten, NULL);
 	}
@@ -456,16 +460,19 @@ void MovingWorm(HWND hwnd)
 void ShowBestScore(int CommendKey , HWND hwnd) {
 	switch (LOWORD(CommendKey)) {
 	case ID_BESTSCORE:
-		//HANDLE hFile;
-		//DWORD dwBytesRead;
-		//TCHAR ReadBuf[200];
+		HANDLE hFile;
+		DWORD dwBytesRead;
+		char ReadBuf[200];
 
-		//hFile = CreateFile(TEXT("score.txt"), GENERIC_READ, 0, NULL, OPEN_ALWAYS, 0, NULL);
-		//ReadFile(hFile, ReadBuf, lstrlen(ReadBuf) - 1, &dwBytesRead, NULL);
+		hFile = CreateFile(TEXT("score.txt"), GENERIC_READ, 0, NULL, OPEN_ALWAYS, 0, NULL);
+		ReadFile(hFile, ReadBuf, sizeof(ReadBuf) - 1, &dwBytesRead, NULL);
+		ReadBuf[dwBytesRead] = '\0';
 
-		//MessageBox(hwnd, ReadBuf, _T("Best Score!"), MB_OK);
-		//CloseHandle(hFile);
-		//break;
+		TCHAR BestScore[200];
+		MultiByteToWideChar(CP_ACP, 0, ReadBuf, -1, BestScore, dwBytesRead + 1);
+		MessageBox(hwnd, BestScore, _T("Best Score!"), MB_OK);
+		CloseHandle(hFile);
+		break;
 	}
 }
 
