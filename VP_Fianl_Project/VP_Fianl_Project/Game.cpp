@@ -3,6 +3,10 @@
 #include <TCHAR.H>
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <string>
+#include <vector>
+#include <sstream>
+#include <algorithm>
 #include "resource.h"
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
@@ -273,13 +277,54 @@ void GameReset() {
 	}
 }
 
-void GameOver(HWND hwnd) {
-	//HANDLE hFile;
+bool desc(int a, int b) {
+	return a > b;
+}
 
+void SaveScore() {
+	HANDLE hFile;
+	DWORD dwBytesRead, dwBytesWritten;
+	std::vector<char> ReadBuf(4096, 0);
+	std::string scoreStr = std::to_string(score);
+	std::string newline = "\n";
+
+	hFile = CreateFile(TEXT("score.txt"), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, 0, NULL);
+	ReadFile(hFile, ReadBuf.data(), ReadBuf.size() - 1, &dwBytesRead, NULL);
+	std::string readStr(ReadBuf.begin(), ReadBuf.end());
+	std::istringstream iss(readStr);
+	std::vector<int> readData;
+	while (std::getline(iss, readStr, '\n')) {
+		try
+		{
+			readData.push_back(std::stoi(readStr));
+		}
+		catch (const std::exception&)
+		{
+			break;
+		}
+	}	
+	readData.push_back(score);
+	std::sort(readData.begin(), readData.end(), desc);
+
+	SetFilePointer(hFile, 0, NULL, FILE_BEGIN);
+	for (int i = 0; i < 10; i++) {
+		if (i >= readData.size())
+			break;
+
+		std::string bestScoreStr = std::to_string(readData[i]);
+		WriteFile(hFile, bestScoreStr.c_str(), bestScoreStr.size(), &dwBytesWritten, NULL);
+		WriteFile(hFile, newline.c_str(), newline.size(), &dwBytesWritten, NULL);
+	}
+	CloseHandle(hFile);
+}
+
+void GameOver(HWND hwnd) {
 	KillTimer(hwnd, 1);
 	TCHAR deathText[30];
 	wsprintf(deathText, _T("ав╬З╫ю╢о╢ы!! \n score : %d"), score);
-	//hFile = CreateFile(TEXT("socre.txt"), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, 0, NULL);
+
+	SaveScore();
+
 	if (IDOK == MessageBox(hwnd, deathText, _T("Game Over"), MB_ICONHAND)) {
 		GameReset();
 		GameInit();
@@ -408,11 +453,19 @@ void MovingWorm(HWND hwnd)
 	}
 }
 
-void ShowBestScore(int CommendKey) {
+void ShowBestScore(int CommendKey , HWND hwnd) {
 	switch (LOWORD(CommendKey)) {
 	case ID_BESTSCORE:
+		//HANDLE hFile;
+		//DWORD dwBytesRead;
+		//TCHAR ReadBuf[200];
 
-		break;
+		//hFile = CreateFile(TEXT("score.txt"), GENERIC_READ, 0, NULL, OPEN_ALWAYS, 0, NULL);
+		//ReadFile(hFile, ReadBuf, lstrlen(ReadBuf) - 1, &dwBytesRead, NULL);
+
+		//MessageBox(hwnd, ReadBuf, _T("Best Score!"), MB_OK);
+		//CloseHandle(hFile);
+		//break;
 	}
 }
 
@@ -435,7 +488,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		DirectControl((int)wParam, hdc);
 		break;
 	case WM_COMMAND:
-		ShowBestScore((int)wParam);
+		ShowBestScore((int)wParam, hwnd);
 		break;
 	case WM_TIMER:
 		MovingWorm(hwnd);
