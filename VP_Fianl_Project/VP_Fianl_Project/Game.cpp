@@ -51,7 +51,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 	return (int)msg.wParam;
 }
 
-#define ITEMNUM 10
+#define AppleNUM 10
 
 HBITMAP appleBitmap;
 HBITMAP HeadBitmap;
@@ -60,17 +60,16 @@ HBITMAP TailBitmap;
 HBITMAP BackGroundBitmap;
 HBITMAP BoardBitmap;
 HBITMAP TeleportBitmap;
-HBITMAP myBitmap;
-RECT rt;
 int board[22][22];	
 int wormX[100], wormY[100];
 int xDirect, yDirect, len;
 int score;
+int level;
 
-void ItemGenerator()
+void AppleGenerator()
 {
 	int i, x, y;
-	for (i = 0; i < ITEMNUM; i++)
+	for (i = 0; i < AppleNUM; i++)
 	{
 		x = rand() % 20 + 1;
 		y = rand() % 20 + 1;
@@ -85,7 +84,7 @@ void ItemGenerator()
 	return;
 }
 
-void ItemReload() {
+void AppleReload() {
 	int x, y;
 	while(1) {
 		x = rand() % 20 + 1;
@@ -221,8 +220,11 @@ void DrawGameBoard(HDC hdc)
 	BitBlt(hdc, 0, 0, 440, 440, mem1dc, 0, 0, SRCCOPY);
 
 	TCHAR scoreText[20];
+	TCHAR levelText[20];
 	wsprintf(scoreText, _T("score : %5d"), score);
+	wsprintf(levelText, _T("level : %d"), level);
 	TextOut(hdc, 0, 22 * 20, scoreText, _tcslen(scoreText));
+	TextOut(hdc, 390, 22 * 20, levelText, _tcslen(levelText));
 
 	SelectObject(mem1dc, oldBit1);
 	DeleteDC(mem2dc);
@@ -258,11 +260,12 @@ void GameInit()
 	board[wormY[0]][wormX[0]] = 3;
 	board[wormY[1]][wormX[1]] = 3;
 
-	ItemGenerator();
+	AppleGenerator();
 
 	len = 2;
 	xDirect = 1; yDirect = 0;
 	score = 0;
+	level = 1;
 }
 
 void GameReset() {
@@ -313,7 +316,7 @@ void SaveScore() {
 	for (int i = 0; i < 10; i++) {
 		if (i >= readData.size())
 			break;
-		std::string number = std::to_string(i + 1) + ":";
+		std::string number = std::to_string(i + 1) + " :";
 		std::string bestScoreStr = std::to_string(readData[i]);
 		WriteFile(hFile, number.c_str(), number.size(), &dwBytesWritten, NULL);
 		WriteFile(hFile, bestScoreStr.c_str(), bestScoreStr.size(), &dwBytesWritten, NULL);
@@ -410,6 +413,12 @@ void DirectControl(int DirectKey, HDC hdc)
 	}
 }
 
+void LevelUp(HWND hwnd) {
+	level += 1;
+	KillTimer(hwnd, 1);
+	SetTimer(hwnd, 1, 100 - (10 * level), NULL);
+}
+
 void MovingWorm(HWND hwnd)
 {
 	int tmpx, tmpy, i;
@@ -428,8 +437,11 @@ void MovingWorm(HWND hwnd)
 		{
 			len = len + 1;
 			score += 10;
+			if (score % 500 == 0)
+				LevelUp(hwnd);
+				
 			board[wormY[0]][wormX[0]] = 0;
-			ItemReload();
+			AppleReload();
 		}
 		else
 			board[wormY[len - 1]][wormX[len - 1]] = 0;
@@ -443,7 +455,6 @@ void MovingWorm(HWND hwnd)
 				wormX[0] = 20;
 				wormY[0] = wormY[0] - 18;
 			}
-
 		}
 
 		for (i = len - 1; i > 1; i--)
@@ -460,6 +471,7 @@ void MovingWorm(HWND hwnd)
 void ShowBestScore(int CommendKey , HWND hwnd) {
 	switch (LOWORD(CommendKey)) {
 	case ID_BESTSCORE:
+		KillTimer(hwnd, 1);
 		HANDLE hFile;
 		DWORD dwBytesRead;
 		char ReadBuf[200];
@@ -470,7 +482,8 @@ void ShowBestScore(int CommendKey , HWND hwnd) {
 
 		TCHAR BestScore[200];
 		MultiByteToWideChar(CP_ACP, 0, ReadBuf, -1, BestScore, dwBytesRead + 1);
-		MessageBox(hwnd, BestScore, _T("Best Score!"), MB_OK);
+		if(IDOK == MessageBox(hwnd, BestScore, _T("Best Score!"), MB_OK))
+			SetTimer(hwnd, 1, 100, NULL);
 		CloseHandle(hFile);
 		break;
 	}
@@ -485,7 +498,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	switch (iMsg) {
 	case WM_CREATE:
 		GameInit();
-		GetClientRect(hwnd, &rt);
 		SetTimer(hwnd, 1, 100, NULL);
 		return 0;
 	case WM_PAINT:

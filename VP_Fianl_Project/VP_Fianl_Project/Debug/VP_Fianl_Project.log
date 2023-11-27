@@ -1,19 +1,19 @@
 ﻿  Game.cpp
-C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(314,9): warning C4018: '>=': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(348,79): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(349,79): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(352,74): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(353,74): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(365,74): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(366,74): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(369,79): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(370,79): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(382,74): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(383,74): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(386,79): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(387,79): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(399,79): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(400,79): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(403,74): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(404,74): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(317,9): warning C4018: '>=': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(351,79): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(352,79): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(355,74): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(356,74): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(368,74): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(369,74): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(372,79): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(373,79): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(385,74): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(386,74): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(389,79): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(390,79): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(402,79): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(403,79): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(406,74): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\VP_Fianl_Project\Game.cpp(407,74): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
   VP_Fianl_Project.vcxproj -> C:\Users\msi\Documents\GitHub\VP_Final_Project\VP_Fianl_Project\Debug\VP_Fianl_Project.exe
